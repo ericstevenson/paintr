@@ -11,12 +11,9 @@ paintr.drawRect = function() {
     var mouse_pos = paintr.canvas.getPointer(e.e);
     is_drawing = true;
     line = new fabric.Line([mouse_pos.x, mouse_pos.y, mouse_pos.x, mouse_pos.y], {
-      strokeWidth: 5,
+      strokeWidth: 2,
       fill: paintr.pen_color,
-      stroke: paintr.pen_color,
-      originX: 'center',
-      originY: 'center',
-      evented: true
+      stroke: paintr.pen_color
     });
     paintr.canvas.add(line);
   });
@@ -26,6 +23,7 @@ paintr.drawRect = function() {
     var mouse_pos = paintr.canvas.getPointer(e.e);
     line.set({ x2: mouse_pos.x, y2: mouse_pos.y });
     paintr.canvas.renderAll();
+    paintr.canvas.calcOffset();
   });
 
   paintr.canvas.on('mouse:up', function(e) {
@@ -46,6 +44,7 @@ paintr.select = function() {
   paintr.canvas.forEachObject(function(obj) {
     obj.selectable = true;
   });
+  paintr.canvas.calcOffset();
   paintr.canvas.renderAll();
 }
 
@@ -57,7 +56,6 @@ paintr.toggleMode = function() {
   paintr.canvas.selection = false;
   paintr.canvas.forEachObject(function(obj) {
     obj.selectable = false;
-    console.log(obj.stateProperties);
   });
 }
 
