@@ -1,0 +1,17 @@
+{
+  "name": "paintr",
+  "version": "0.0.0",
+  "homepage": "https://github.com/eric-s-/paintr",
+  "authors": [
+    "Eric Stevenson <esteve5@uwo.ca>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "fabric": "*"
+  },
+  "devDependencies": {
+    "qunit": "*"
+  }
+}
