@@ -6,10 +6,17 @@
     height:60px;
     width: 60px;
 }
+
 button img{
     height:25px;
     width: 25px;
 }
+
+.ellipse-img{
+    height:15px;
+    width: 40px;
+}
+
 #tool-bar{
     padding-left: 45px !important;
 }
