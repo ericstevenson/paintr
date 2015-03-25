@@ -3,12 +3,14 @@
   "version": "0.0.0",
   "homepage": "https://github.com/eric-s-/paintr",
   "authors": [
-    "Eric Stevenson <esteve5@uwo.ca>"
+    "Eric Stevenson <esteve5@uwo.ca>",
+    "Justin Hoang <me@justinhoang.ca>"
   ],
   "main": "index.html",
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "bootstrap": "latest",
     "fabric": "*"
   },
   "devDependencies": {
