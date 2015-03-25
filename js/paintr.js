@@ -1,7 +1,5 @@
 var paintr = paintr || {};
 
-paintr.pen_color = "#EEEEE";
-
 paintr.drawLine = function() {
   paintr.toggleMode();
   var is_drawing = false;
@@ -34,14 +32,12 @@ paintr.drawLine = function() {
 paintr.drawFreehand = function() {
   paintr.toggleMode();
   paintr.canvas.isDrawingMode = true;
-  paintr.canvas.freeDrawingLineWidth = 100;
   paintr.canvas.renderAll();
 }
 
 paintr.select = function() {
   paintr.toggleMode();
   paintr.canvas.selection = true;
-  console.log(paintr.canvas.getObjects());
   paintr.canvas.forEachObject(function(obj) {
     obj.selectable = true;
     obj.setCoords();
@@ -64,6 +60,7 @@ paintr.toggleMode = function() {
 
 paintr.color = function(color) {
   paintr.pen_color = color;
+  paintr.canvas.freeDrawingBrush.color = paintr.pen_color;
 }
 
 paintr.clear = function() {
@@ -73,6 +70,8 @@ paintr.clear = function() {
 window.onload = function() {
   paintr.canvas = new fabric.Canvas('canvas', { selection: true });
   paintr.canvas.backgroundColor = 'white';
+  paintr.pen_color = 'black';
+  paintr.canvas.freeDrawingBrush.width = 2;
   paintr.canvas.renderAll();
   document.getElementById('line').addEventListener('click', paintr.drawLine);
   document.getElementById('freehand').addEventListener('click', paintr.drawFreehand);
