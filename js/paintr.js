@@ -15,7 +15,8 @@ paintr.drawRect = function() {
       fill: paintr.pen_color,
       stroke: paintr.pen_color,
       originX: 'center',
-      originY: 'center'
+      originY: 'center',
+      evented: true
     });
     paintr.canvas.add(line);
   });
@@ -32,18 +33,37 @@ paintr.drawRect = function() {
   });
 }
 
+paintr.drawFreehand = function() {
+  paintr.toggleMode();
+  paintr.canvas.isDrawingMode = true;
+  paintr.canvas.freeDrawingLineWidth = 100;
+  paintr.canvas.renderAll();
+}
+
+paintr.select = function() {
+  paintr.toggleMode();
+  paintr.canvas.selection = true;
+  paintr.canvas.forEachObject(function(obj) {
+    obj.selectable = true;
+  });
+  paintr.canvas.renderAll();
+}
+
 paintr.toggleMode = function() {
   paintr.canvas.off('mouse:down');
   paintr.canvas.off('mouse:up');
   paintr.canvas.off('mouse:move');
-}
-
-paintr.drawFreehand = function() {
-  paintr.toggleMode();
+  paintr.canvas.isDrawingMode = false;
+  paintr.canvas.selection = false;
+  paintr.canvas.forEachObject(function(obj) {
+    obj.selectable = false;
+    console.log(obj.stateProperties);
+  });
 }
 
 window.onload = function() {
-  paintr.canvas = new fabric.Canvas('canvas');
+  paintr.canvas = new fabric.Canvas('canvas', { selection: true });
   document.getElementById('line').addEventListener('click', paintr.drawRect);
   document.getElementById('freehand').addEventListener('click', paintr.drawFreehand);
+  document.getElementById('select').addEventListener('click', paintr.select);
 }
