@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="bower_components/fabric/dist/fabric.min.js"></script>
@@ -10,9 +11,10 @@
     <script src="js/paintr.js"></script>
 </head>
 
-<body>
+<body style="background-color:#e5e5e5">
+    <h1 class="brand-font">Paintr</h1>
     <div class="row">
-    <div class="col-lg-1 btn-group-vertical" role="group">
+    <div id="tool-bar" class="col-lg-1 btn-group-vertical" role="group">
             <button id="select" type="button" class="btn btn-block btn-default"><img src="assets/cursor.png"></button>
             <button id="freehand" type="button" class="btn btn-block btn-default"><img src="assets/free.png"></button>
             <button id="line" type="button" class="btn btn-default"><img src="assets/line.png"></button>
@@ -21,19 +23,20 @@
             <button id="polygon" type="button" class="btn btn-default"><img src="assets/poly.png"></button>
             <button id="circle" type="button" class="btn btn-default"><img src="assets/circ.png"></button>
             <button id="elipse" type="button" class="btn btn-default"><img src="assets/ellipse.png"></button>
+            <button id="clear" type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button>
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Colour
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li id="black"><a>Black</a></li>
-                <li id= "red"><a>Red</a></li>
-                <li id="yellow"><a>Orange</a></li>
-                <li id="orange"><a>Yellow</a></li>
-                <li id="blue"><a>Blue</a></li>
-                <li id="purple"><a>Purple</a></li>
-                <li id = "green"><a>Green</a></li>
-                <li id = "brown"><a>Brown</a></li>
+                <li id="black"><a><span class="black-font glyphicon glyphicon-stop"></span>Black</a></li>
+                <li id= "red"><a><span class="red-font glyphicon glyphicon-stop"></span>Red</a></li>
+                <li id="yellow"><a><span class="orange-font glyphicon glyphicon-stop"></span>Orange</a></li>
+                <li id="orange"><a><span class="yellow-font glyphicon glyphicon-stop"></span> Yellow</a></li>
+                <li id="blue"><a><span class="blue-font glyphicon glyphicon-stop"></span> Blue</a></li>
+                <li id="purple"><a><span class="purple-font glyphicon glyphicon-stop"></span> Purple</a></li>
+                <li id = "green"><a><span class="green-font glyphicon glyphicon-stop"></span> Green</a></li>
+                <li id = "brown"><a><span class="brown-font glyphicon glyphicon-stop"></span> Brown</a></li>
             </ul>
         </div>
 

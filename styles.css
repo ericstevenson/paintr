@@ -2,7 +2,43 @@
     padding-top: 10px;
 }
 
+.brand-img{
+    height:60px;
+    width: 60px;
+}
 button img{
     height:25px;
     width: 25px;
+}
+#tool-bar{
+    padding-left: 45px !important;
+}
+.brand-font{
+    font-family: 'Gloria Hallelujah', cursive;
+}
+
+.black-font{
+    font-size: 80px;
+    color: black;
+}
+.red-font{
+    color: red;
+}
+.yellow-font{
+    color: yellow;
+}
+.orange-font{
+    color: orange;
+}
+.blue-font{
+    color: blue;
+}
+.purple-font{
+    color: purple;
+}
+.green-font{
+    color: green;
+}
+.brown-font{
+    color: brown;
 }

@@ -61,6 +61,8 @@ paintr.toggleMode = function() {
 
 window.onload = function() {
   paintr.canvas = new fabric.Canvas('canvas', { selection: true });
+  paintr.canvas.backgroundColor = 'white';
+  paintr.canvas.renderAll();
   document.getElementById('line').addEventListener('click', paintr.drawRect);
   document.getElementById('freehand').addEventListener('click', paintr.drawFreehand);
   document.getElementById('select').addEventListener('click', paintr.select);
