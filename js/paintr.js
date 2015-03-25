@@ -122,7 +122,7 @@ paintr.toggleMode = function() {
  * Changes the pen color
  * @param color - color to be changed to
  */
-paintr.color = function(color) {
+paintr.setColor = function(color) {
   paintr.pen_color = color;
   paintr.canvas.freeDrawingBrush.color = paintr.pen_color;
 }
