@@ -41,8 +41,10 @@ paintr.drawFreehand = function() {
 paintr.select = function() {
   paintr.toggleMode();
   paintr.canvas.selection = true;
+  console.log(paintr.canvas.getObjects());
   paintr.canvas.forEachObject(function(obj) {
     obj.selectable = true;
+    obj.setCoords();
   });
   paintr.canvas.calcOffset();
   paintr.canvas.renderAll();
