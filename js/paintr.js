@@ -42,6 +42,46 @@ paintr.drawRect = function() {
 }
 
 /**
+ * Handler to draw a circle.
+ */
+paintr.drawCircle = function () {
+  paintr.toggleMode();
+  var is_drawing = false;
+  var circle,
+      mouse_pos,
+      x0, y0;
+
+  paintr.canvas.on('mouse:down', function(e) {
+    mouse_pos = paintr.canvas.getPointer(e.e);
+    x0 = mouse_pos.x;
+    y0 = mouse_pos.y;
+    is_drawing = true;
+    circle = new fabric.Circle({
+      radius: 0,
+      left: x0,
+      top: y0,
+      fill: '',
+      stroke: paintr.pen_color
+    });
+    paintr.canvas.add(circle);
+  });
+
+  paintr.canvas.on('mouse:move', function(e) {
+    if (!is_drawing) return;
+    mouse_pos = paintr.canvas.getPointer(e.e);
+    var w = mouse_pos.x - x0;
+        h = mouse_pos.y - y0;
+    var diameter = Math.sqrt(w * w + h * h);
+    circle.set({ radius: diameter });
+    paintr.canvas.renderAll();
+  });
+
+  paintr.canvas.on('mouse:up', function(e) {
+    is_drawing = false;
+  });
+}
+
+/**
  * Handler to draw a straight line. Mouse down, move, and up events handled
  */
 paintr.drawLine = function() {
@@ -72,6 +112,7 @@ paintr.drawLine = function() {
     is_drawing = false;
   });
 }
+
 
 /**
  * Handler for freehand drawing
@@ -141,4 +182,5 @@ window.onload = function() {
   document.getElementById('select').addEventListener('click', paintr.select);
   document.getElementById('clear').addEventListener('click', paintr.clear);
   document.getElementById('rectangle').addEventListener('click', paintr.drawRect);
+  document.getElementById('circle').addEventListener('click', paintr.drawCircle);
 }
