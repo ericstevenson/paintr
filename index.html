@@ -11,8 +11,11 @@
     <script src="js/paintr.js"></script>
 </head>
 
-<body style="background-color:#e5e5e5">
-    <h1 class="brand-font">Paintr</h1>
+<body style="background-color:#F5F5F5">
+    <div class="text-center row">
+        <span class="col-md-6"><img src="assets/logo.png" class="brand-img pull-right"/></span>
+        <span class="col-md-6"><h1 class="brand-font pull-left">Paintr</h1></span>
+    </div>
     <div class="row">
     <div id="tool-bar" class="col-lg-1 btn-group-vertical" role="group">
             <button id="select" type="button" class="btn btn-block btn-default"><img src="assets/cursor.png"></button>
@@ -31,8 +34,8 @@
             <ul class="dropdown-menu" role="menu">
                 <li id="black"  onclick="paintr.color(this.id)"><a><span class="black-font glyphicon glyphicon-stop""></span>Black</a></li>
                 <li id= "red"  onclick="paintr.color(this.id)"><a><span class="red-font glyphicon glyphicon-stop"></span>Red</a></li>
-                <li id="yellow"  onclick="paintr.color(this.id)"><a><span class="orange-font glyphicon glyphicon-stop"></span>Orange</a></li>
-                <li id="orange"  onclick="paintr.color(this.id)"><a><span class="yellow-font glyphicon glyphicon-stop"></span> Yellow</a></li>
+                <li id="yellow"  onclick="paintr.color(this.id)"><a><span class="orange-font glyphicon glyphicon-stop"></span>Yellow</a></li>
+                <li id="orange"  onclick="paintr.color(this.id)"><a><span class="yellow-font glyphicon glyphicon-stop"></span>Orange</a></li>
                 <li id="blue"  onclick="paintr.color(this.id)"><a><span class="blue-font glyphicon glyphicon-stop"></span> Blue</a></li>
                 <li id="purple"  onclick="paintr.color(this.id)"><a><span class="purple-font glyphicon glyphicon-stop"></span> Purple</a></li>
                 <li id ="green"  onclick="paintr.color(this.id)"><a><span class="green-font glyphicon glyphicon-stop"></span> Green</a></li>
