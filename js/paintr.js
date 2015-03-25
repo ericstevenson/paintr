@@ -59,6 +59,10 @@ paintr.toggleMode = function() {
   });
 }
 
+paintr.color = function(color) {
+  paintr.pen_color = color;
+}
+
 window.onload = function() {
   paintr.canvas = new fabric.Canvas('canvas', { selection: true });
   paintr.canvas.backgroundColor = 'white';
