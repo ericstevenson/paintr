@@ -73,7 +73,7 @@ window.onload = function() {
   paintr.canvas.backgroundColor = 'white';
   paintr.canvas.renderAll();
   document.getElementById('line').addEventListener('click', paintr.drawLine);
-  //document.getElementById('freehand').addEventListener('click', paintr.drawFreehand);
+  document.getElementById('freehand').addEventListener('click', paintr.drawFreehand);
   document.getElementById('select').addEventListener('click', paintr.select);
   document.getElementById('clear').addEventListener('click', paintr.clear);
 }
