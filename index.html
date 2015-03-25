@@ -1,13 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="bower_components/fabric/dist/fabric.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <script src="js/paintr.js"></script>
 </head>
 
 <body>
-    <canvas id="canvas" width="1500" height="730" style="border:1px solid #000000"></canvas>
+    <div class="row">
+    <div class="col-lg-1 btn-group-vertical" role="group">
+            <button id="select" type="button" class="btn btn-block btn-default"><img src="assets/cursor.png"></button>
+            <button id="freehand" type="button" class="btn btn-block btn-default"><img src="assets/free.png"></button>
+            <button id="line" type="button" class="btn btn-default"><img src="assets/line.png"></button>
+            <button id="square" type="button" class="btn btn-default"><img src="assets/square.png"></button>
+            <button id="rectangle" type="button" class="btn btn-default"><img src="assets/rect.png"></button>
+            <button id="polygon" type="button" class="btn btn-default"><img src="assets/poly.png"></button>
+            <button id="circle" type="button" class="btn btn-default"><img src="assets/circ.png"></button>
+            <button id="elipse" type="button" class="btn btn-default"><img src="assets/ellipse.png"></button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Colour
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li id="black"><a>Black</a></li>
+                <li id= "red"><a>Red</a></li>
+                <li id="yellow"><a>Orange</a></li>
+                <li id="orange"><a>Yellow</a></li>
+                <li id="blue"><a>Blue</a></li>
+                <li id="purple"><a>Purple</a></li>
+                <li id = "green"><a>Green</a></li>
+                <li id = "brown"><a>Brown</a></li>
+            </ul>
+        </div>
+
+        <div class = "col-lg-11">
+            <canvas id="canvas" width="1400" height="730" style="border:1px solid #000000"></canvas>
+        </div>
+    </div>
 </body>
 </html>
