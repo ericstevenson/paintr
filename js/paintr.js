@@ -10,7 +10,6 @@ paintr.drawRect = function() {
   var rect,
       mouse_pos,
       x0, y0;
-
   paintr.canvas.on('mouse:down', function(e) {
     mouse_pos = paintr.canvas.getPointer(e.e);
     x0 = mouse_pos.x;
@@ -24,6 +23,9 @@ paintr.drawRect = function() {
       fill: '',
       stroke: paintr.pen_color
     });
+    if (paintr.mode === 'square') {
+      rect.lockUniScaling = true;
+    }
     paintr.canvas.add(rect);
   });
 
@@ -31,7 +33,12 @@ paintr.drawRect = function() {
     if (!is_drawing) return;
     mouse_pos = paintr.canvas.getPointer(e.e);
     var w = mouse_pos.x - x0,
-        h = mouse_pos.y - y0;
+        h;
+    if (paintr.mode === 'rectangle') {
+      h = mouse_pos.y - y0;
+    } else {
+      h = w;
+    }
     rect.set({ width: w, height: h});
     paintr.canvas.renderAll();
   });
@@ -127,11 +134,16 @@ paintr.clear = function() {
   paintr.canvas.clear();
 }
 
+paintr.setMode = function(mode) {
+  paintr.mode = mode;
+}
+
 // Setup the canvas
 window.onload = function() {
   paintr.canvas = new fabric.Canvas('canvas', { selection: true });
   paintr.canvas.backgroundColor = 'white';
   paintr.pen_color = 'black';
+  paintr.mode = 'select';
   paintr.canvas.freeDrawingBrush.width = 2;
   paintr.canvas.renderAll();
 
@@ -141,4 +153,5 @@ window.onload = function() {
   document.getElementById('select').addEventListener('click', paintr.select);
   document.getElementById('clear').addEventListener('click', paintr.clear);
   document.getElementById('rectangle').addEventListener('click', paintr.drawRect);
+  document.getElementById('square').addEventListener('click', paintr.drawRect);
 }
