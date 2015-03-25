@@ -11,7 +11,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "latest",
-    "fabric": "*"
+    "fabric": "latest"
   },
   "devDependencies": {
     "qunit": "*"
