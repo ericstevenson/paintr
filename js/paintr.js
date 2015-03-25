@@ -1,5 +1,9 @@
+// app namespace
 var paintr = paintr || {};
 
+/**
+ * Handler to draw a straight line. Mouse down, move, and up events handled
+ */
 paintr.drawLine = function() {
   paintr.toggleMode();
   var is_drawing = false;
@@ -29,12 +33,18 @@ paintr.drawLine = function() {
   });
 }
 
+/**
+ * Handler for freehand drawing
+ */
 paintr.drawFreehand = function() {
   paintr.toggleMode();
   paintr.canvas.isDrawingMode = true;
   paintr.canvas.renderAll();
 }
 
+/**
+ * Handler for selection and moving
+ */
 paintr.select = function() {
   paintr.toggleMode();
   paintr.canvas.selection = true;
@@ -46,6 +56,10 @@ paintr.select = function() {
   paintr.canvas.renderAll();
 }
 
+
+/**
+ * Resets canvas handlers. Should be called whenever the mode is changed
+ */
 paintr.toggleMode = function() {
   paintr.canvas.off('mouse:down');
   paintr.canvas.off('mouse:up');
@@ -55,24 +69,33 @@ paintr.toggleMode = function() {
   paintr.canvas.forEachObject(function(obj) {
     obj.selectable = false;
   });
-
 }
 
+/**
+ * Changes the pen color
+ * @param color - color to be changed to
+ */
 paintr.color = function(color) {
   paintr.pen_color = color;
   paintr.canvas.freeDrawingBrush.color = paintr.pen_color;
 }
 
+/**
+ * Clears the canvas of all objects
+ */
 paintr.clear = function() {
   paintr.canvas.clear();
 }
 
+// Setup the canvas
 window.onload = function() {
   paintr.canvas = new fabric.Canvas('canvas', { selection: true });
   paintr.canvas.backgroundColor = 'white';
   paintr.pen_color = 'black';
   paintr.canvas.freeDrawingBrush.width = 2;
   paintr.canvas.renderAll();
+
+  // EVENT LISTENERS
   document.getElementById('line').addEventListener('click', paintr.drawLine);
   document.getElementById('freehand').addEventListener('click', paintr.drawFreehand);
   document.getElementById('select').addEventListener('click', paintr.select);
