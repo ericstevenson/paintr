@@ -134,8 +134,25 @@ paintr.clear = function() {
   paintr.canvas.clear();
 }
 
+/**
+ * Sets the mode for drawing and highlights the mode
+ * @param mode to be set
+ */
 paintr.setMode = function(mode) {
+  var elem = document.getElementById(paintr.mode);
+  elem.className = paintr.removeClass(elem, 'active');
+  document.getElementById(mode).className += 'active';
   paintr.mode = mode;
+}
+
+/**
+ * Remove one class from an element
+ * @param elem The element to remove the class from
+ * @param to_remove The class to be removed
+ * @returns {string} The resultant class name
+ */
+paintr.removeClass = function(elem, to_remove) {
+  return elem.className.replace(to_remove, '');
 }
 
 // Setup the canvas
