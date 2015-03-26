@@ -10,7 +10,6 @@ paintr.drawRect = function() {
   var rect,
       mouse_pos,
       x0, y0;
-
   paintr.canvas.on('mouse:down', function(e) {
     mouse_pos = paintr.canvas.getPointer(e.e);
     x0 = mouse_pos.x;
@@ -24,6 +23,9 @@ paintr.drawRect = function() {
       fill: '',
       stroke: paintr.pen_color
     });
+    if (paintr.mode === 'square') {
+      rect.lockUniScaling = true;
+    }
     paintr.canvas.add(rect);
   });
 
@@ -31,7 +33,12 @@ paintr.drawRect = function() {
     if (!is_drawing) return;
     mouse_pos = paintr.canvas.getPointer(e.e);
     var w = mouse_pos.x - x0,
-        h = mouse_pos.y - y0;
+        h;
+    if (paintr.mode === 'rectangle') {
+      h = mouse_pos.y - y0;
+    } else {
+      h = w;
+    }
     rect.set({ width: w, height: h});
     paintr.canvas.renderAll();
   });
@@ -39,7 +46,7 @@ paintr.drawRect = function() {
   paintr.canvas.on('mouse:up', function(e) {
     is_drawing = false;
   });
-}
+};
 
 /**
  * Handler to draw a circle.
@@ -79,7 +86,7 @@ paintr.drawCircle = function () {
   paintr.canvas.on('mouse:up', function(e) {
     is_drawing = false;
   });
-}
+};
 
 /**
  * Handler to draw a ellipse. Mouse down, move, and up events handle
@@ -151,7 +158,7 @@ paintr.drawLine = function() {
   paintr.canvas.on('mouse:up', function(e) {
     is_drawing = false;
   });
-}
+};
 
 
 /**
@@ -161,7 +168,7 @@ paintr.drawFreehand = function() {
   paintr.toggleMode();
   paintr.canvas.isDrawingMode = true;
   paintr.canvas.renderAll();
-}
+};
 
 /**
  * Handler for selection and moving
@@ -175,7 +182,7 @@ paintr.select = function() {
   });
   paintr.canvas.calcOffset();
   paintr.canvas.renderAll();
-}
+};
 
 
 /**
@@ -190,29 +197,55 @@ paintr.toggleMode = function() {
   paintr.canvas.forEachObject(function(obj) {
     obj.selectable = false;
   });
-}
+};
 
 /**
  * Changes the pen color
  * @param color - color to be changed to
  */
-paintr.color = function(color) {
+paintr.setColor = function(color) {
   paintr.pen_color = color;
   paintr.canvas.freeDrawingBrush.color = paintr.pen_color;
-}
+};
 
 /**
  * Clears the canvas of all objects
  */
 paintr.clear = function() {
   paintr.canvas.clear();
-}
+};
+
+/**
+ * Sets the mode for drawing and highlights the mode
+ * @param mode to be set
+ */
+paintr.setMode = function(mode) {
+  var elem = document.getElementById(paintr.mode);
+  elem.className = paintr.removeClass(elem, 'active');
+  document.getElementById(mode).className += 'active';
+  paintr.mode = mode;
+};
+
+/**
+ * Remove one class from an element
+ * @param elem The element to remove the class from
+ * @param to_remove The class to be removed
+ * @returns {string} The resultant class name
+ */
+paintr.removeClass = function(elem, to_remove) {
+  return elem.className.replace(to_remove, '');
+};
+
+paintr.save = function() {
+
+};
 
 // Setup the canvas
 window.onload = function() {
   paintr.canvas = new fabric.Canvas('canvas', { selection: true });
   paintr.canvas.backgroundColor = 'white';
   paintr.pen_color = 'black';
+  paintr.mode = 'select';
   paintr.canvas.freeDrawingBrush.width = 2;
   paintr.canvas.renderAll();
 
@@ -222,6 +255,11 @@ window.onload = function() {
   document.getElementById('select').addEventListener('click', paintr.select);
   document.getElementById('clear').addEventListener('click', paintr.clear);
   document.getElementById('rectangle').addEventListener('click', paintr.drawRect);
+  document.getElementById('square').addEventListener('click', paintr.drawRect);
   document.getElementById('circle').addEventListener('click', paintr.drawCircle);
+<<<<<<< HEAD
   document.getElementById('ellipse').addEventListener('click', paintr.drawEllipse);
 }
+=======
+};
+>>>>>>> eb9bc7c6c00ebb5fc4f1ad536361b5eeab9db724

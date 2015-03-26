@@ -48,3 +48,7 @@ button img{
 .brown-font{
     color: brown;
 }
+
+.dropdown-menu li{
+    cursor: pointer;
+}
