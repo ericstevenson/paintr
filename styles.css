@@ -12,6 +12,10 @@ button img{
     width: 25px;
 }
 
+.carousel-inner>.item>a>img, .carousel-inner>.item>img, .img-responsive, .thumbnail a>img, .thumbnail>img {
+    display: inline;
+}
+
 #tool-bar{
     padding-left: 45px !important;
 }
