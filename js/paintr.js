@@ -46,7 +46,47 @@ paintr.drawRect = function() {
   paintr.canvas.on('mouse:up', function(e) {
     is_drawing = false;
   });
-}
+};
+
+/**
+ * Handler to draw a circle.
+ */
+paintr.drawCircle = function () {
+  paintr.toggleMode();
+  var is_drawing = false;
+  var circle,
+      mouse_pos,
+      x0, y0;
+
+  paintr.canvas.on('mouse:down', function(e) {
+    mouse_pos = paintr.canvas.getPointer(e.e);
+    x0 = mouse_pos.x;
+    y0 = mouse_pos.y;
+    is_drawing = true;
+    circle = new fabric.Circle({
+      radius: 0,
+      left: x0,
+      top: y0,
+      fill: '',
+      stroke: paintr.pen_color
+    });
+    paintr.canvas.add(circle);
+  });
+
+  paintr.canvas.on('mouse:move', function(e) {
+    if (!is_drawing) return;
+    mouse_pos = paintr.canvas.getPointer(e.e);
+    var w = mouse_pos.x - x0;
+        h = mouse_pos.y - y0;
+    var diameter = Math.sqrt(w * w + h * h);
+    circle.set({ radius: diameter });
+    paintr.canvas.renderAll();
+  });
+
+  paintr.canvas.on('mouse:up', function(e) {
+    is_drawing = false;
+  });
+};
 
 /**
  * Handler to draw a straight line. Mouse down, move, and up events handled
@@ -78,7 +118,8 @@ paintr.drawLine = function() {
   paintr.canvas.on('mouse:up', function(e) {
     is_drawing = false;
   });
-}
+};
+
 
 /**
  * Handler for freehand drawing
@@ -87,7 +128,7 @@ paintr.drawFreehand = function() {
   paintr.toggleMode();
   paintr.canvas.isDrawingMode = true;
   paintr.canvas.renderAll();
-}
+};
 
 /**
  * Handler for selection and moving
@@ -101,7 +142,7 @@ paintr.select = function() {
   });
   paintr.canvas.calcOffset();
   paintr.canvas.renderAll();
-}
+};
 
 
 /**
@@ -116,7 +157,7 @@ paintr.toggleMode = function() {
   paintr.canvas.forEachObject(function(obj) {
     obj.selectable = false;
   });
-}
+};
 
 /**
  * Changes the pen color
@@ -125,14 +166,14 @@ paintr.toggleMode = function() {
 paintr.setColor = function(color) {
   paintr.pen_color = color;
   paintr.canvas.freeDrawingBrush.color = paintr.pen_color;
-}
+};
 
 /**
  * Clears the canvas of all objects
  */
 paintr.clear = function() {
   paintr.canvas.clear();
-}
+};
 
 /**
  * Sets the mode for drawing and highlights the mode
@@ -143,7 +184,7 @@ paintr.setMode = function(mode) {
   elem.className = paintr.removeClass(elem, 'active');
   document.getElementById(mode).className += 'active';
   paintr.mode = mode;
-}
+};
 
 /**
  * Remove one class from an element
@@ -153,7 +194,11 @@ paintr.setMode = function(mode) {
  */
 paintr.removeClass = function(elem, to_remove) {
   return elem.className.replace(to_remove, '');
-}
+};
+
+paintr.save = function() {
+
+};
 
 // Setup the canvas
 window.onload = function() {
@@ -171,4 +216,5 @@ window.onload = function() {
   document.getElementById('clear').addEventListener('click', paintr.clear);
   document.getElementById('rectangle').addEventListener('click', paintr.drawRect);
   document.getElementById('square').addEventListener('click', paintr.drawRect);
-}
+  document.getElementById('circle').addEventListener('click', paintr.drawCircle);
+};

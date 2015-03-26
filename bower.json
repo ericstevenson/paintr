@@ -4,7 +4,8 @@
   "homepage": "https://github.com/eric-s-/paintr",
   "authors": [
     "Eric Stevenson <esteve5@uwo.ca>",
-    "Justin Hoang <me@justinhoang.ca>"
+    "Justin Hoang <me@justinhoang.ca>",
+    "Shaohao Lin <shaohaolinca@gmail.com>"
   ],
   "main": "index.html",
   "license": "MIT",
