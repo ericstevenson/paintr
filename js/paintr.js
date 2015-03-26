@@ -2,8 +2,7 @@
 var paintr = paintr || {};
 
 //app attributes
-paintr.clipboardArray = new Array();
-paintr.clipboardObject = null;
+paintr.clipboard = [];
 
 /**
  * Handler for drawing rectangles and squares
@@ -212,38 +211,52 @@ paintr.setColor = function(color) {
   paintr.canvas.freeDrawingBrush.color = paintr.pen_color;
 };
 
+/**
+ * Cuts the currently selected objects
+ */
 paintr.cut = function(){
-      clipboardArray = new Array();
-
   if(paintr.canvas.getActiveGroup()){
+    paintr.clipboard = [];
     for(var i in paintr.canvas.getActiveGroup().objects){
-      //var object = fabric.util.object.clone(paintr.canvas.getActiveGroup().objects[i]);
-      paintr.clipboardArray[i] = paintr.canvas.getActiveGroup().objects[i];
+      paintr.clipboard[i] = paintr.canvas.getActiveGroup().objects[i];
     }
-    paintr.canvas.getActiveGroup().forEachObject(function(o){ paintr.canvas.remove(o) });
+    paintr.canvas.getActiveGroup().forEachObject(function(o){
+      paintr.canvas.remove(o)
+    });
     paintr.canvas.discardActiveGroup().renderAll();                    
-  }else if(paintr.canvas.getActiveObject()){
-    //var object = fabric.util.object.clone(paintr.canvas.getActiveObject());
-    paintr.clipboardObject = paintr.canvas.getActiveObject();
+  } else if(paintr.canvas.getActiveObject()){
+    paintr.clipboard = [paintr.canvas.getActiveObject()];
     paintr.canvas.remove(paintr.canvas.getActiveObject());
     paintr.canvas.discardActiveObject().renderAll();                    
   }
-}
+};
 
+
+
+/**
+ * Pastes the objects that are currently on the clipboard
+ */
 paintr.paste = function(){
-  if(paintr.clipboardArray.length > 0){
-    for(var i in paintr.clipboardArray){
-      paintr.canvas.add(paintr.clipboardArray[i]);
-      paintr.clipboardArray[i].setCoords();
+  if(paintr.clipboard.length > 1){
+    for(var i = 0; i < paintr.clipboard.length; i++){
+      var object = fabric.util.object.clone(paintr.clipboard[i]);
+      paintr.canvas.add(object);
+      object.setCoords();
+      object.selectable = false;
     }                    
-  }else if(paintr.clipboardObject){
-    paintr.canvas.add(paintr.clipboardObject);
-    paintr.clipboardObject.setCoords();
+  } else if(paintr.clipboard.length > 0){
+    var object = fabric.util.object.clone(paintr.clipboard[0]);
+    paintr.canvas.add(object);
+    object.setCoords();
+    object.selectable = false;
   }
   paintr.canvas.renderAll();    
-}
+};
 
-
+/**
+ * Handler for cutting and pasting
+ * @param event
+ */
 paintr.onKeyDownHandler=function(event) {
     var key;
     if(window.event){
@@ -306,7 +319,7 @@ paintr.save = function() {
 
 // Setup the canvas
 window.onload = function() {
-  paintr.canvas = new fabric.Canvas('canvas', { selection: true });
+  paintr.canvas = new fabric.Canvas('canvas');
   paintr.canvas.backgroundColor = 'white';
   paintr.pen_color = 'black';
   paintr.mode = 'select';
@@ -319,8 +332,8 @@ window.onload = function() {
   document.getElementById('select').addEventListener('click', paintr.select);
   document.getElementById('clear').addEventListener('click', paintr.clear);
   document.getElementById('rectangle').addEventListener('click', paintr.drawRect);
-  document.onkeydown = paintr.onKeyDownHandler;
   document.getElementById('square').addEventListener('click', paintr.drawRect);
   document.getElementById('circle').addEventListener('click', paintr.drawCircle);
   document.getElementById('ellipse').addEventListener('click', paintr.drawEllipse);
+  document.onkeydown = paintr.onKeyDownHandler;
 };
