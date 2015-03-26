@@ -82,6 +82,46 @@ paintr.drawCircle = function () {
 }
 
 /**
+ * Handler to draw a ellipse. Mouse down, move, and up events handle
+ */
+paintr.drawEllipse = function() {
+  paintr.toggleMode();
+  var is_drawing = false;
+  var ellipse,
+      mouse_pos,
+      x0, y0;
+
+  paintr.canvas.on('mouse:down', function(e) {
+    mouse_pos = paintr.canvas.getPointer(e.e);
+    x0 = mouse_pos.x;
+    y0 = mouse_pos.y;
+    is_drawing = true;
+    ellipse = new fabric.Ellipse({
+      rx: 0,
+      ry: 0,
+      left: x0,
+      top: y0,
+      fill: '',
+      stroke: paintr.pen_color
+    });
+    paintr.canvas.add(ellipse);
+  });
+
+  paintr.canvas.on('mouse:move', function(e) {
+    if (!is_drawing) return;
+    mouse_pos = paintr.canvas.getPointer(e.e);
+    var radius_a = Math.abs(mouse_pos.x - x0);
+        radius_b = Math.abs(mouse_pos.y - y0);
+    ellipse.set({ rx: radius_a, ry: radius_b});
+    paintr.canvas.renderAll();    
+  });
+
+  paintr.canvas.on('mouse:up', function(e) {
+    is_drawing = false;
+  });
+}
+
+/**
  * Handler to draw a straight line. Mouse down, move, and up events handled
  */
 paintr.drawLine = function() {
@@ -183,4 +223,5 @@ window.onload = function() {
   document.getElementById('clear').addEventListener('click', paintr.clear);
   document.getElementById('rectangle').addEventListener('click', paintr.drawRect);
   document.getElementById('circle').addEventListener('click', paintr.drawCircle);
+  document.getElementById('ellipse').addEventListener('click', paintr.drawEllipse);
 }
