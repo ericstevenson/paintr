@@ -257,9 +257,5 @@ window.onload = function() {
   document.getElementById('rectangle').addEventListener('click', paintr.drawRect);
   document.getElementById('square').addEventListener('click', paintr.drawRect);
   document.getElementById('circle').addEventListener('click', paintr.drawCircle);
-<<<<<<< HEAD
   document.getElementById('ellipse').addEventListener('click', paintr.drawEllipse);
-}
-=======
 };
->>>>>>> eb9bc7c6c00ebb5fc4f1ad536361b5eeab9db724
