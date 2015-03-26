@@ -1,6 +1,10 @@
 // app namespace
 var paintr = paintr || {};
 
+//app attributes
+paintr.clipboardArray = new Array();
+paintr.clipboardObject = null;
+
 /**
  * Handler for drawing rectangles and squares
  */
@@ -120,6 +124,66 @@ paintr.color = function(color) {
   paintr.canvas.freeDrawingBrush.color = paintr.pen_color;
 }
 
+paintr.cut = function(){
+      clipboardArray = new Array();
+
+  if(paintr.canvas.getActiveGroup()){
+    for(var i in paintr.canvas.getActiveGroup().objects){
+      //var object = fabric.util.object.clone(paintr.canvas.getActiveGroup().objects[i]);
+      paintr.clipboardArray[i] = paintr.canvas.getActiveGroup().objects[i];
+    }
+    paintr.canvas.getActiveGroup().forEachObject(function(o){ paintr.canvas.remove(o) });
+    paintr.canvas.discardActiveGroup().renderAll();                    
+  }else if(paintr.canvas.getActiveObject()){
+    //var object = fabric.util.object.clone(paintr.canvas.getActiveObject());
+    paintr.clipboardObject = paintr.canvas.getActiveObject();
+    paintr.canvas.remove(paintr.canvas.getActiveObject());
+    paintr.canvas.discardActiveObject().renderAll();                    
+  }
+}
+
+paintr.paste = function(){
+  if(paintr.clipboardArray.length > 0){
+    for(var i in paintr.clipboardArray){
+      paintr.canvas.add(paintr.clipboardArray[i]);
+      paintr.clipboardArray[i].setCoords();
+    }                    
+  }else if(paintr.clipboardObject){
+    paintr.canvas.add(paintr.clipboardObject);
+    paintr.clipboardObject.setCoords();
+  }
+  paintr.canvas.renderAll();    
+}
+
+
+paintr.onKeyDownHandler=function(event) {
+    var key;
+    if(window.event){
+        key = window.event.keyCode;
+    }
+    else{
+        key = event.keyCode;
+    }
+    switch(key){
+
+        case 88: // Cut (Ctrl+X)
+            if(event.ctrlKey){
+                event.preventDefault();
+                paintr.cut();
+            }
+            break;
+        case 86: // Paste (Ctrl+V)
+            if(event.ctrlKey){
+                event.preventDefault();
+                paintr.paste();
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+
 /**
  * Clears the canvas of all objects
  */
@@ -141,4 +205,6 @@ window.onload = function() {
   document.getElementById('select').addEventListener('click', paintr.select);
   document.getElementById('clear').addEventListener('click', paintr.clear);
   document.getElementById('rectangle').addEventListener('click', paintr.drawRect);
+  document.onkeydown = paintr.onKeyDownHandler;
+
 }
