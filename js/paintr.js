@@ -187,7 +187,6 @@ paintr.select = function() {
   paintr.canvas.renderAll();
 };
 
-
 /**
  * Resets canvas handlers. Should be called whenever the mode is changed
  */
@@ -214,41 +213,56 @@ paintr.setColor = function(color) {
 /**
  * Cuts the currently selected objects
  */
-paintr.cut = function(){
-  if(paintr.canvas.getActiveGroup()){
+paintr.cut = function() {
+  if (paintr.canvas.getActiveGroup()) {
     paintr.clipboard = [];
-    for(var i in paintr.canvas.getActiveGroup().objects){
+    for (var i in paintr.canvas.getActiveGroup().objects){
       paintr.clipboard[i] = paintr.canvas.getActiveGroup().objects[i];
     }
     paintr.canvas.getActiveGroup().forEachObject(function(o){
       paintr.canvas.remove(o)
     });
     paintr.canvas.discardActiveGroup().renderAll();                    
-  } else if(paintr.canvas.getActiveObject()){
+  } else if (paintr.canvas.getActiveObject()){
     paintr.clipboard = [paintr.canvas.getActiveObject()];
     paintr.canvas.remove(paintr.canvas.getActiveObject());
     paintr.canvas.discardActiveObject().renderAll();                    
   }
 };
 
-
+/**
+ * Copies the currently selected objects to the clipboard
+ */
+paintr.copy = function() {
+  if (paintr.canvas.getActiveGroup()) {
+    for (var i in paintr.canvas.getActiveGroup().objects){
+      paintr.clipboard[i] = paintr.canvas.getActiveGroup().objects[i];
+    }
+  } else if (paintr.canvas.getActiveObject()){
+    paintr.clipboard = [paintr.canvas.getActiveObject()];
+  }
+};
 
 /**
  * Pastes the objects that are currently on the clipboard
  */
-paintr.paste = function(){
-  if(paintr.clipboard.length > 1){
-    for(var i = 0; i < paintr.clipboard.length; i++){
+paintr.paste = function() {
+  if (paintr.clipboard.length > 1){
+    for (var i = 0; i < paintr.clipboard.length; i++){
       var object = fabric.util.object.clone(paintr.clipboard[i]);
       paintr.canvas.add(object);
       object.setCoords();
-      object.selectable = false;
+      if (paintr.mode !== 'select') {
+        object.selectable = false;
+      }
     }                    
-  } else if(paintr.clipboard.length > 0){
+  } else if (paintr.clipboard.length > 0){
     var object = fabric.util.object.clone(paintr.clipboard[0]);
     paintr.canvas.add(object);
     object.setCoords();
-    object.selectable = false;
+    if (paintr.mode !== 'select') {
+      object.selectable = false;
+    }
   }
   paintr.canvas.renderAll();    
 };
@@ -258,31 +272,35 @@ paintr.paste = function(){
  * @param event
  */
 paintr.onKeyDownHandler=function(event) {
-    var key;
-    if(window.event){
-        key = window.event.keyCode;
-    }
-    else{
-        key = event.keyCode;
-    }
-    switch(key){
-
-        case 88: // Cut (Ctrl+X)
-            if(event.ctrlKey){
-                event.preventDefault();
-                paintr.cut();
-            }
-            break;
-        case 86: // Paste (Ctrl+V)
-            if(event.ctrlKey){
-                event.preventDefault();
-                paintr.paste();
-            }
-            break;
-        default:
-            break;
-    }
-}
+  var key;
+  if(window.event){
+    key = window.event.keyCode;
+  } else{
+    key = event.keyCode;
+  }
+  switch(key) {
+    case 67: // Copy (Ctrl+C)
+      if (event.ctrlKey) {
+        event.preventDefault();
+        paintr.copy();
+      }
+      break;
+    case 88: // Cut (Ctrl+X)
+      if (event.ctrlKey) {
+        event.preventDefault();
+        paintr.cut();
+      }
+      break;
+    case 86: // Paste (Ctrl+V)
+      if (event.ctrlKey) {
+        event.preventDefault();
+        paintr.paste();
+      }
+      break;
+    default:
+      break;
+  }
+};
 
 
 /**
