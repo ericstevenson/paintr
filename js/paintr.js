@@ -82,7 +82,7 @@ paintr.drawCircle = function () {
     var w = mouse_pos.x - x0;
         h = mouse_pos.y - y0;
     var diameter = Math.sqrt(w * w + h * h);
-    circle.set({ radius: diameter });
+    circle.set({ radius: diameter/2 });
     paintr.canvas.renderAll();
   });
 
