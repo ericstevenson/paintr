@@ -133,8 +133,10 @@ paintr.UndoRedo.prototype.canRedo = function() {
 };
 
 //app attributes
+
 paintr.clipboard = []; // stores cut, copy, and paste items
 paintr.undo_redo_manager = new paintr.UndoRedo(); // Handles undo redo operations for app
+paintr.savedCanvases = []; // local storage for saved canvases
 
 /**
  * Handler for drawing rectangles and squares
@@ -214,7 +216,7 @@ paintr.drawCircle = function () {
     var w = mouse_pos.x - x0;
         h = mouse_pos.y - y0;
     var diameter = Math.sqrt(w * w + h * h);
-    circle.set({ radius: diameter });
+    circle.set({ radius: diameter/2 });
     paintr.canvas.renderAll();
   });
 
@@ -490,9 +492,56 @@ paintr.removeClass = function(elem, to_remove) {
   return elem.className.replace(to_remove, '');
 };
 
-paintr.save = function() {
-
+/**
+ * Save the current canvas
+ */
+paintr.saveCanvas = function() {
+  var canvasName = prompt("Please enter your canvas name", "");
+  for (var i = 0; i<paintr.savedCanvases.length; i++){
+    if(paintr.savedCanvases[i].name == canvasName){
+      canvasName = prompt("Name taken. Please enter an unused canvas name", "");
+      i = -1;
+    }
+  }
+  if (canvasName) {
+    var serializedCanvas = JSON.stringify(paintr.canvas);
+    paintr.savedCanvases.push({
+      name: canvasName,
+      canvas: serializedCanvas
+    });
+    paintr.loadCanvasList();
+  }else{
+    alert("Name not given. Save cancelled.");
+  }
 };
+
+/**
+ * Load the drop down menu with all saved canvases
+ */
+paintr.loadCanvasList = function(){
+  
+  var ul = document.getElementById("saved-list");
+  while(ul.firstChild ){
+    ul.removeChild( ul.firstChild );
+  }
+  for(var i = 0; i < paintr.savedCanvases.length; i++){
+    var li = document.createElement("li");
+    var a = document.createElement("a");
+    a.setAttribute("id", "canvas"+i);
+    a.setAttribute("onclick", "paintr.loadCanvas(this.id)");
+    a.appendChild(document.createTextNode(paintr.savedCanvases[i].name));
+    li.appendChild(a);
+    ul.appendChild(li);
+  }
+}
+
+/**
+ * Load the canvas that is selected from the drop down menu
+ * @param canvasId The canvas ID of the serialized canvas to be loaded
+ */
+paintr.loadCanvas = function(canvasId){
+  paintr.canvas.loadFromJSON(paintr.savedCanvases[parseInt(canvasId.charAt(canvasId.length-1))].canvas);
+}
 
 // Setup the canvas
 window.onload = function() {
@@ -516,5 +565,6 @@ window.onload = function() {
   document.getElementById('square').addEventListener('click', paintr.drawRect);
   document.getElementById('circle').addEventListener('click', paintr.drawCircle);
   document.getElementById('ellipse').addEventListener('click', paintr.drawEllipse);
+  document.getElementById('save').addEventListener('click', paintr.saveCanvas);
   document.onkeydown = paintr.onKeyDownHandler;
 };

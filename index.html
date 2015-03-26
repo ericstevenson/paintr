@@ -14,7 +14,18 @@
 <body style="background-color:#F5F5F5">
     <div class="text-center row">
         <span class="col-md-6"><img src="assets/logo.png" class="brand-img pull-right"/></span>
-        <span class="col-md-6"><h1 class="brand-font pull-left">Paintr</h1></span>
+        <span class="col-md-4"><h1 class="brand-font pull-left">Paintr</h1></span>
+        <span class="col-md-2">
+            <div class="btn-group" role="group" aria-label="...">
+            <button id="save" type="button" class="btn btn-default"><span class="glyphicon glyphicon-save"></span>Save</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="glyphicon glyphicon-open"></span>
+                Load
+                <span class="caret"></span>
+            </button>
+            <ul id = "saved-list" class="dropdown-menu" role="menu"></ul>
+            </div>
+        </span>
     </div>
     <div class="row">
     <div id="tool-bar" class="col-lg-1 btn-group-vertical" role="group">
@@ -25,17 +36,17 @@
             <button id="rectangle" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img src="assets/rect.png"></button>
             <button id="polygon" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img src="assets/poly.png"></button>
             <button id="circle" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img src="assets/circ.png"></button>
-            <button id="ellipse" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img class="ellipse-img" src="assets/ellipse.png"></button>
+            <button id="ellipse" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img src="assets/ellipse.png" class="img-responsive"></button>
             <button id="clear" type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button>
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="font-size: 12px; padding-left: 1px">
                 Colour
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li id="black"  onclick="paintr.setColor(this.id)"><a><span class="black-font glyphicon glyphicon-stop"></span>Black</a></li>
-                <li id= "red"  onclick="paintr.setColor(this.id)"><a><span class="red-font glyphicon glyphicon-stop"></span>Red</a></li>
-                <li id="yellow"  onclick="paintr.setColor(this.id)"><a><span class="yellow-font glyphicon glyphicon-stop"></span>Yellow</a></li>
-                <li id="orange"  onclick="paintr.setColor(this.id)"><a><span class="orange-font glyphicon glyphicon-stop"></span>Orange</a></li>
+                <li id="black"  onclick="paintr.setColor(this.id)"><a><span class="black-font glyphicon glyphicon-stop"></span> Black</a></li>
+                <li id= "red"  onclick="paintr.setColor(this.id)"><a><span class="red-font glyphicon glyphicon-stop"></span> Red</a></li>
+                <li id="yellow"  onclick="paintr.setColor(this.id)"><a><span class="yellow-font glyphicon glyphicon-stop"></span> Yellow</a></li>
+                <li id="orange"  onclick="paintr.setColor(this.id)"><a><span class="orange-font glyphicon glyphicon-stop"></span> Orange</a></li>
                 <li id="blue"  onclick="paintr.setColor(this.id)"><a><span class="blue-font glyphicon glyphicon-stop"></span> Blue</a></li>
                 <li id="purple"  onclick="paintr.setColor(this.id)"><a><span class="purple-font glyphicon glyphicon-stop"></span> Purple</a></li>
                 <li id ="green"  onclick="paintr.setColor(this.id)"><a><span class="green-font glyphicon glyphicon-stop"></span> Green</a></li>

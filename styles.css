@@ -12,9 +12,8 @@ button img{
     width: 25px;
 }
 
-.ellipse-img{
-    height:15px;
-    width: 40px;
+.carousel-inner>.item>a>img, .carousel-inner>.item>img, .img-responsive, .thumbnail a>img, .thumbnail>img {
+    display: inline;
 }
 
 #tool-bar{
