@@ -331,6 +331,9 @@ paintr.removeClass = function(elem, to_remove) {
   return elem.className.replace(to_remove, '');
 };
 
+/**
+ * Save the current canvas
+ */
 paintr.saveCanvas = function() {
   var canvasName = prompt("Please enter your canvas name", "");
   for (var i = 0; i<paintr.savedCanvases.length; i++){
@@ -351,6 +354,9 @@ paintr.saveCanvas = function() {
   }
 };
 
+/**
+ * Load the drop down menu with all saved canvases
+ */
 paintr.loadCanvasList = function(){
   
   var ul = document.getElementById("saved-list");
@@ -368,6 +374,10 @@ paintr.loadCanvasList = function(){
   }
 }
 
+/**
+ * Load the canvas that is selected from the drop down menu
+ * @param canvasId The canvas ID of the serialized canvas to be loaded
+ */
 paintr.loadCanvas = function(canvasId){
   paintr.canvas.loadFromJSON(paintr.savedCanvases[parseInt(canvasId.charAt(canvasId.length-1))].canvas);
 }
