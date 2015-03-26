@@ -18,28 +18,28 @@
     </div>
     <div class="row">
     <div id="tool-bar" class="col-lg-1 btn-group-vertical" role="group">
-            <button id="select" type="button" class="btn btn-block btn-default"><img src="assets/cursor.png"></button>
-            <button id="freehand" type="button" class="btn btn-block btn-default"><img src="assets/free.png"></button>
-            <button id="line" type="button" class="btn btn-default"><img src="assets/line.png"></button>
-            <button id="square" type="button" class="btn btn-default"><img src="assets/square.png"></button>
-            <button id="rectangle" type="button" class="btn btn-default"><img src="assets/rect.png"></button>
-            <button id="polygon" type="button" class="btn btn-default"><img src="assets/poly.png"></button>
-            <button id="circle" type="button" class="btn btn-default"><img src="assets/circ.png"></button>
-            <button id="elipse" type="button" class="btn btn-default"><img class = "ellipse-img" src="assets/ellipse.png"></button>
+            <button id="select" type="button" class="btn btn-block btn-default" onclick="paintr.setMode(this.id)"><img src="assets/cursor.png"></button>
+            <button id="freehand" type="button" class="btn btn-block btn-default" onclick="paintr.setMode(this.id)"><img src="assets/free.png"></button>
+            <button id="line" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img src="assets/line.png"></button>
+            <button id="square" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img src="assets/square.png"></button>
+            <button id="rectangle" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img src="assets/rect.png"></button>
+            <button id="polygon" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img src="assets/poly.png"></button>
+            <button id="circle" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img src="assets/circ.png"></button>
+            <button id="ellipse" type="button" class="btn btn-default" onclick="paintr.setMode(this.id)"><img src="assets/ellipse.png"></button>
             <button id="clear" type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"></span></button>
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Colour
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li id="black"  onclick="paintr.color(this.id)"><a><span class="black-font glyphicon glyphicon-stop""></span>Black</a></li>
-                <li id= "red"  onclick="paintr.color(this.id)"><a><span class="red-font glyphicon glyphicon-stop"></span>Red</a></li>
-                <li id="yellow"  onclick="paintr.color(this.id)"><a><span class="yellow-font glyphicon glyphicon-stop"></span>Yellow</a></li>
-                <li id="orange"  onclick="paintr.color(this.id)"><a><span class="orange-font glyphicon glyphicon-stop"></span>Orange</a></li>
-                <li id="blue"  onclick="paintr.color(this.id)"><a><span class="blue-font glyphicon glyphicon-stop"></span> Blue</a></li>
-                <li id="purple"  onclick="paintr.color(this.id)"><a><span class="purple-font glyphicon glyphicon-stop"></span> Purple</a></li>
-                <li id ="green"  onclick="paintr.color(this.id)"><a><span class="green-font glyphicon glyphicon-stop"></span> Green</a></li>
-                <li id ="brown"  onclick="paintr.color(this.id)"><a><span class="brown-font glyphicon glyphicon-stop"></span> Brown</a></li>
+                <li id="black"  onclick="paintr.setColor(this.id)"><a><span class="black-font glyphicon glyphicon-stop"></span>Black</a></li>
+                <li id= "red"  onclick="paintr.setColor(this.id)"><a><span class="red-font glyphicon glyphicon-stop"></span>Red</a></li>
+                <li id="yellow"  onclick="paintr.setColor(this.id)"><a><span class="yellow-font glyphicon glyphicon-stop"></span>Yellow</a></li>
+                <li id="orange"  onclick="paintr.setColor(this.id)"><a><span class="orange-font glyphicon glyphicon-stop"></span>Orange</a></li>
+                <li id="blue"  onclick="paintr.setColor(this.id)"><a><span class="blue-font glyphicon glyphicon-stop"></span> Blue</a></li>
+                <li id="purple"  onclick="paintr.setColor(this.id)"><a><span class="purple-font glyphicon glyphicon-stop"></span> Purple</a></li>
+                <li id ="green"  onclick="paintr.setColor(this.id)"><a><span class="green-font glyphicon glyphicon-stop"></span> Green</a></li>
+                <li id ="brown"  onclick="paintr.setColor(this.id)"><a><span class="brown-font glyphicon glyphicon-stop"></span> Brown</a></li>
             </ul>
         </div>
 
