@@ -297,6 +297,56 @@ paintr.drawLine = function() {
   });
 };
 
+/**
+ * Handler for draw a polygon. Mouse down and events handle
+ */
+paintr.drawPolygon = function() {
+  paintr.toggleMode();
+  var is_drawing = false,
+      is_done_drawing = false;
+  var polygon,
+      mouse_pos;
+
+    paintr.canvas.on('mouse:down', function(e) {
+      if (is_done_drawing) return;
+      //mouse_pos = paintr.canvas.getPointer(e.e);
+      is_drawing = false;
+    });
+
+    paintr.canvas.on('mouse:move', function(e) {
+      if (is_done_drawing) return;
+      if (!is_drawing) return;
+      mouse_pos = paintr.canvas.getPointer(e.e);
+
+      polygon.set({ x2: mouse_pos.x, y2: mouse_pos.y });
+
+      paintr.canvas.renderAll();
+      paintr.canvas.calcOffset();
+    });
+
+    paintr.canvas.on('mouse:up', function(e) {
+      is_done_drawing = false;
+      is_drawing = true;
+      mouse_pos = paintr.canvas.getPointer(e.e);
+
+      polygon = new fabric.Line([mouse_pos.x, mouse_pos.y, mouse_pos.x, mouse_pos.y], {
+      strokeWidth: 2,
+      fill: paintr.pen_color,
+      stroke: paintr.pen_color
+    });
+
+    paintr.canvas.add(polygon);
+  });
+};
+
+paintr.endPolygon = function () {
+
+  if (paintr.mode == "polygon") {
+    paintr.toggleMode();
+    document.getElementById("polygon").click();
+  }
+};
+
 
 /**
  * Handler for freehand drawing
@@ -562,6 +612,9 @@ window.onload = function() {
   document.getElementById('square').addEventListener('click', paintr.drawRect);
   document.getElementById('circle').addEventListener('click', paintr.drawCircle);
   document.getElementById('ellipse').addEventListener('click', paintr.drawEllipse);
+  document.getElementById('polygon').addEventListener('click', paintr.drawPolygon);
+  document.oncontextmenu = paintr.endPolygon;
   document.getElementById('save').addEventListener('click', paintr.saveCanvas);
+
   document.onkeydown = paintr.onKeyDownHandler;
 };
