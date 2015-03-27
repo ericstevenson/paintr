@@ -216,7 +216,7 @@ paintr.drawCircle = function () {
     var w = mouse_pos.x - x0;
         h = mouse_pos.y - y0;
     var diameter = Math.sqrt(w * w + h * h);
-    circle.set({ radius: diameter/2 });
+    circle.set({ radius: diameter / 2 });
     paintr.canvas.renderAll();
   });
 
@@ -254,7 +254,7 @@ paintr.drawEllipse = function() {
   paintr.canvas.on('mouse:move', function(e) {
     if (!is_drawing) return;
     mouse_pos = paintr.canvas.getPointer(e.e);
-    var radius_a = Math.abs(mouse_pos.x - x0);
+    var radius_a = Math.abs(mouse_pos.x - x0),
         radius_b = Math.abs(mouse_pos.y - y0);
     ellipse.set({ rx: radius_a, ry: radius_b});
     paintr.canvas.renderAll();    
@@ -497,8 +497,8 @@ paintr.removeClass = function(elem, to_remove) {
  */
 paintr.saveCanvas = function() {
   var canvasName = prompt("Please enter your canvas name", "");
-  for (var i = 0; i<paintr.savedCanvases.length; i++){
-    if(paintr.savedCanvases[i].name == canvasName){
+  for (var i = 0; i<paintr.savedCanvases.length; i++) {
+    if (paintr.savedCanvases[i].name == canvasName) {
       canvasName = prompt("Name taken. Please enter an unused canvas name", "");
       i = -1;
     }
@@ -510,7 +510,7 @@ paintr.saveCanvas = function() {
       canvas: serializedCanvas
     });
     paintr.loadCanvasList();
-  }else{
+  } else {
     alert("Name not given. Save cancelled.");
   }
 };
@@ -519,12 +519,11 @@ paintr.saveCanvas = function() {
  * Load the drop down menu with all saved canvases
  */
 paintr.loadCanvasList = function(){
-  
   var ul = document.getElementById("saved-list");
-  while(ul.firstChild ){
+  while(ul.firstChild ) {
     ul.removeChild( ul.firstChild );
   }
-  for(var i = 0; i < paintr.savedCanvases.length; i++){
+  for (var i = 0; i < paintr.savedCanvases.length; i++) {
     var li = document.createElement("li");
     var a = document.createElement("a");
     a.setAttribute("id", "canvas"+i);
@@ -548,8 +547,6 @@ window.onload = function() {
   paintr.canvas = new fabric.Canvas('canvas');
   paintr.undo_redo_manager.insert(paintr.canvas); // Store the blank canvas for undo redo
   paintr.canvas.on("object:modified", paintr.undoRedoHandler);
-  //paintr.canvas.on("object:added", paintr.undoRedoHandler);
-  //paintr.canvas.on("object:removed", paintr.undoRedoHandler);
   paintr.canvas.backgroundColor = 'white';
   paintr.pen_color = 'black';
   paintr.mode = 'select';
