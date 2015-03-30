@@ -6,7 +6,7 @@ var paintr = paintr || {};
  * @param canvas the canvas (current state of the diagram)
  * @constructor
  */
-paintr.Memento = function(canvas) {
+paintr.Memento = function (canvas) {
   var serialized_canvas = JSON.stringify(canvas);
   this.state = serialized_canvas;
 };
@@ -15,13 +15,14 @@ paintr.Memento = function(canvas) {
  * Originator keeps track of the current state of the canvas (memento design pattern)
  * @constructor
  */
-paintr.Originator = function() {};
+paintr.Originator = function () {
+};
 
 /**
  * Caretaker keeps track of states needed for undo and redo (memento design pattern)
  * @constructor
  */
-paintr.Caretaker = function() {
+paintr.Caretaker = function () {
   this.undo_stack = [];
   this.redo_stack = [];
 };
@@ -30,7 +31,7 @@ paintr.Caretaker = function() {
  * Returns the result of an undo action
  * @returns {Memento}
  */
-paintr.Caretaker.prototype.getUndoMemento = function() {
+paintr.Caretaker.prototype.getUndoMemento = function () {
   if (this.undo_stack.length >= 2) {
     this.redo_stack.push(this.undo_stack.pop());
     return this.undo_stack[this.undo_stack.length - 1];
@@ -43,7 +44,7 @@ paintr.Caretaker.prototype.getUndoMemento = function() {
  * Returns the result of a redo action
  * @returns {Memento}
  */
-paintr.Caretaker.prototype.getRedoMemento = function() {
+paintr.Caretaker.prototype.getRedoMemento = function () {
   if (this.redo_stack.length != 0) {
     var memento = this.redo_stack.pop();
     this.undo_stack.push(memento);
@@ -57,7 +58,7 @@ paintr.Caretaker.prototype.getRedoMemento = function() {
  * Inserts a new memento into the undo stack. Called when actions occur
  * @param canvas the current canvas
  */
-paintr.Caretaker.prototype.insertMemento = function(canvas) {
+paintr.Caretaker.prototype.insertMemento = function (canvas) {
   if (canvas) {
     var memento = new paintr.Memento(canvas);
     this.undo_stack.push(memento);
@@ -69,7 +70,7 @@ paintr.Caretaker.prototype.insertMemento = function(canvas) {
  * Checks to see if undo operation is possible
  * @returns {boolean}
  */
-paintr.Caretaker.prototype.canUndo = function() {
+paintr.Caretaker.prototype.canUndo = function () {
   return this.undo_stack.length >= 2;
 };
 
@@ -77,7 +78,7 @@ paintr.Caretaker.prototype.canUndo = function() {
  * Checks to see if the redo operation is possible
  * @returns {boolean}
  */
-paintr.Caretaker.prototype.canRedo = function() {
+paintr.Caretaker.prototype.canRedo = function () {
   return this.redo_stack.length != 0;
 };
 
@@ -85,7 +86,7 @@ paintr.Caretaker.prototype.canRedo = function() {
  * UndoRedo handles undo and redo operations for paintr
  * @constructor
  */
-paintr.UndoRedo = function() {
+paintr.UndoRedo = function () {
   this.caretaker = new paintr.Caretaker();
   this.originator = new paintr.Originator();
 };
@@ -94,7 +95,7 @@ paintr.UndoRedo = function() {
  * Calls the caretaker insert with the current canvas
  * @param canvas
  */
-paintr.UndoRedo.prototype.insert = function(canvas) {
+paintr.UndoRedo.prototype.insert = function (canvas) {
   this.caretaker.insertMemento(canvas);
 };
 
@@ -102,7 +103,7 @@ paintr.UndoRedo.prototype.insert = function(canvas) {
  * Gets the next memento from the undo stack
  * @returns {Object} Returns the state of the memento which is a JSON representation of a canvas
  */
-paintr.UndoRedo.prototype.undo = function() {
+paintr.UndoRedo.prototype.undo = function () {
   this.originator.state = this.caretaker.getUndoMemento();
   return this.originator.state;
 };
@@ -111,7 +112,7 @@ paintr.UndoRedo.prototype.undo = function() {
  * Gets the next memento from the redo stack
  * @returns {Object} Returns the state of the memento which is a JSON representation of a canvas
  */
-paintr.UndoRedo.prototype.redo = function() {
+paintr.UndoRedo.prototype.redo = function () {
   this.originator.state = this.caretaker.getRedoMemento();
   return this.originator.state;
 };
@@ -120,7 +121,7 @@ paintr.UndoRedo.prototype.redo = function() {
  * Checks if undo is possible
  * @returns {boolean}
  */
-paintr.UndoRedo.prototype.canUndo = function() {
+paintr.UndoRedo.prototype.canUndo = function () {
   return this.caretaker.canUndo();
 };
 
@@ -128,7 +129,7 @@ paintr.UndoRedo.prototype.canUndo = function() {
  * Checks if redo is possible
  * @returns {boolean}
  */
-paintr.UndoRedo.prototype.canRedo = function() {
+paintr.UndoRedo.prototype.canRedo = function () {
   return this.caretaker.canRedo();
 };
 
@@ -141,24 +142,24 @@ paintr.savedCanvases = []; // local storage for saved canvases
 /**
  * Handler for drawing rectangles and squares
  */
-paintr.drawRect = function() {
+paintr.drawRect = function () {
   paintr.toggleMode();
-  var is_drawing = false;
+  var isDrawing = false;
   var rect,
-      mouse_pos,
-      x0, y0;
-  paintr.canvas.on('mouse:down', function(e) {
-    mouse_pos = paintr.canvas.getPointer(e.e);
-    x0 = mouse_pos.x;
-    y0 = mouse_pos.y;
-    is_drawing = true;
+    mousePos,
+    x0, y0;
+  paintr.canvas.on('mouse:down', function (e) {
+    mousePos = paintr.canvas.getPointer(e.e);
+    x0 = mousePos.x;
+    y0 = mousePos.y;
+    isDrawing = true;
     rect = new fabric.Rect({
       width: 0,
       height: 0,
       left: x0,
       top: y0,
       fill: '',
-      stroke: paintr.pen_color
+      stroke: paintr.penColor
     });
     if (paintr.mode === 'square') {
       rect.lockUniScaling = true;
@@ -166,22 +167,22 @@ paintr.drawRect = function() {
     paintr.canvas.add(rect);
   });
 
-  paintr.canvas.on('mouse:move', function(e) {
-    if (!is_drawing) return;
-    mouse_pos = paintr.canvas.getPointer(e.e);
-    var w = mouse_pos.x - x0,
-        h;
+  paintr.canvas.on('mouse:move', function (e) {
+    if (!isDrawing) return;
+    mousePos = paintr.canvas.getPointer(e.e);
+    var w = mousePos.x - x0,
+      h;
     if (paintr.mode === 'rectangle') {
-      h = mouse_pos.y - y0;
+      h = mousePos.y - y0;
     } else {
       h = w;
     }
-    rect.set({ width: w, height: h});
+    rect.set({width: w, height: h});
     paintr.canvas.renderAll();
   });
 
-  paintr.canvas.on('mouse:up', function(e) {
-    is_drawing = false;
+  paintr.canvas.on('mouse:up', function (e) {
+    isDrawing = false;
   });
 };
 
@@ -190,168 +191,174 @@ paintr.drawRect = function() {
  */
 paintr.drawCircle = function () {
   paintr.toggleMode();
-  var is_drawing = false;
+  var isDrawing = false;
   var circle,
-      mouse_pos,
-      x0, y0;
+    mousePos,
+    x0, y0;
 
-  paintr.canvas.on('mouse:down', function(e) {
-    mouse_pos = paintr.canvas.getPointer(e.e);
-    x0 = mouse_pos.x;
-    y0 = mouse_pos.y;
-    is_drawing = true;
+  paintr.canvas.on('mouse:down', function (e) {
+    mousePos = paintr.canvas.getPointer(e.e);
+    x0 = mousePos.x;
+    y0 = mousePos.y;
+    isDrawing = true;
     circle = new fabric.Circle({
       radius: 0,
       left: x0,
       top: y0,
       fill: '',
-      stroke: paintr.pen_color
+      stroke: paintr.penColor
     });
     paintr.canvas.add(circle);
   });
 
-  paintr.canvas.on('mouse:move', function(e) {
-    if (!is_drawing) return;
-    mouse_pos = paintr.canvas.getPointer(e.e);
-    var w = mouse_pos.x - x0;
-        h = mouse_pos.y - y0;
+  paintr.canvas.on('mouse:move', function (e) {
+    if (!isDrawing) return;
+    mousePos = paintr.canvas.getPointer(e.e);
+    var w = mousePos.x - x0;
+    h = mousePos.y - y0;
     var diameter = Math.sqrt(w * w + h * h);
-    circle.set({ radius: diameter / 2 });
+    circle.set({radius: diameter / 2});
     paintr.canvas.renderAll();
   });
 
-  paintr.canvas.on('mouse:up', function(e) {
-    is_drawing = false;
+  paintr.canvas.on('mouse:up', function (e) {
+    isDrawing = false;
   });
 };
 
 /**
  * Handler to draw a ellipse. Mouse down, move, and up events handle
  */
-paintr.drawEllipse = function() {
+paintr.drawEllipse = function () {
   paintr.toggleMode();
-  var is_drawing = false;
+  var isDrawing = false;
   var ellipse,
-      mouse_pos,
-      x0, y0;
+    mousePos,
+    x0, y0;
 
-  paintr.canvas.on('mouse:down', function(e) {
-    mouse_pos = paintr.canvas.getPointer(e.e);
-    x0 = mouse_pos.x;
-    y0 = mouse_pos.y;
-    is_drawing = true;
+  paintr.canvas.on('mouse:down', function (e) {
+    mousePos = paintr.canvas.getPointer(e.e);
+    x0 = mousePos.x;
+    y0 = mousePos.y;
+    isDrawing = true;
     ellipse = new fabric.Ellipse({
       rx: 0,
       ry: 0,
       left: x0,
       top: y0,
       fill: '',
-      stroke: paintr.pen_color
+      stroke: paintr.penColor
     });
     paintr.canvas.add(ellipse);
   });
 
-  paintr.canvas.on('mouse:move', function(e) {
-    if (!is_drawing) return;
-    mouse_pos = paintr.canvas.getPointer(e.e);
-    var radius_a = Math.abs(mouse_pos.x - x0),
-        radius_b = Math.abs(mouse_pos.y - y0);
-    ellipse.set({ rx: radius_a, ry: radius_b});
-    paintr.canvas.renderAll();    
+  paintr.canvas.on('mouse:move', function (e) {
+    if (!isDrawing) return;
+    mousePos = paintr.canvas.getPointer(e.e);
+    var radius_a = Math.abs(mousePos.x - x0),
+      radius_b = Math.abs(mousePos.y - y0);
+    ellipse.set({rx: radius_a, ry: radius_b});
+    paintr.canvas.renderAll();
   });
 
-  paintr.canvas.on('mouse:up', function(e) {
-    is_drawing = false;
+  paintr.canvas.on('mouse:up', function (e) {
+    isDrawing = false;
   });
 }
 
 /**
  * Handler to draw a straight line. Mouse down, move, and up events handled
  */
-paintr.drawLine = function() {
+paintr.drawLine = function () {
   paintr.toggleMode();
-  var is_drawing = false;
+  var isDrawing = false;
   var line;
 
-  paintr.canvas.on('mouse:down', function(e) {
-    var mouse_pos = paintr.canvas.getPointer(e.e);
-    is_drawing = true;
-    line = new fabric.Line([mouse_pos.x, mouse_pos.y, mouse_pos.x, mouse_pos.y], {
+  paintr.canvas.on('mouse:down', function (e) {
+    var mousePos = paintr.canvas.getPointer(e.e);
+    isDrawing = true;
+    line = new fabric.Line([mousePos.x, mousePos.y, mousePos.x, mousePos.y], {
       strokeWidth: 2,
-      fill: paintr.pen_color,
-      stroke: paintr.pen_color
+      fill: paintr.penColor,
+      stroke: paintr.penColor
     });
     paintr.canvas.add(line);
   });
 
-  paintr.canvas.on('mouse:move', function(e) {
-    if (!is_drawing) return;
-    var mouse_pos = paintr.canvas.getPointer(e.e);
-    line.set({ x2: mouse_pos.x, y2: mouse_pos.y });
+  paintr.canvas.on('mouse:move', function (e) {
+    if (!isDrawing) return;
+    var mousePos = paintr.canvas.getPointer(e.e);
+    line.set({x2: mousePos.x, y2: mousePos.y});
     paintr.canvas.renderAll();
     paintr.canvas.calcOffset();
   });
 
-  paintr.canvas.on('mouse:up', function(e) {
-    is_drawing = false;
+  paintr.canvas.on('mouse:up', function (e) {
+    isDrawing = false;
   });
 };
 
 /**
  * Handler for draw a polygon. Mouse down and events handle
  */
-paintr.drawPolygon = function() {
+paintr.drawPolygon = function () {
   paintr.toggleMode();
-  var is_drawing = false,
-      is_done_drawing = false;
-  var polygon,
-      mouse_pos;
+  var isDrawing = true,
+    currentLine,
+    mousePos,
+    polygon,
+    justFinishedPolygon = false;
 
-    paintr.canvas.on('mouse:down', function(e) {
-      if (is_done_drawing) return;
-      //mouse_pos = paintr.canvas.getPointer(e.e);
-      is_drawing = false;
-    });
 
-    paintr.canvas.on('mouse:move', function(e) {
-      if (is_done_drawing) return;
-      if (!is_drawing) return;
-      mouse_pos = paintr.canvas.getPointer(e.e);
-
-      polygon.set({ x2: mouse_pos.x, y2: mouse_pos.y });
-
-      paintr.canvas.renderAll();
-      paintr.canvas.calcOffset();
-    });
-
-    paintr.canvas.on('mouse:up', function(e) {
-      is_done_drawing = false;
-      is_drawing = true;
-      mouse_pos = paintr.canvas.getPointer(e.e);
-
-      polygon = new fabric.Line([mouse_pos.x, mouse_pos.y, mouse_pos.x, mouse_pos.y], {
-      strokeWidth: 2,
-      fill: paintr.pen_color,
-      stroke: paintr.pen_color
-    });
-
-    paintr.canvas.add(polygon);
+  paintr.canvas.on('mouse:move', function (e) {
+    if (!isDrawing || !currentLine || justFinishedPolygon) return;
+    mousePos = paintr.canvas.getPointer(e.e);
+    currentLine.set({x2: mousePos.x, y2: mousePos.y});
+    paintr.canvas.renderAll();
+    paintr.canvas.calcOffset();
   });
-};
 
-paintr.endPolygon = function () {
+  paintr.canvas.on('mouse:up', function (e) {
+    if (justFinishedPolygon) {
+      justFinishedPolygon = false;
+      return;
+    }
+    mousePos = paintr.canvas.getPointer(e.e);
+    currentLine = new fabric.Line([mousePos.x, mousePos.y, mousePos.x, mousePos.y], {
+      strokeWidth: 2,
+      fill: paintr.penColor,
+      stroke: paintr.penColor
+    });
+    if (!polygon) {
+      polygon = [];
+    }
+    polygon.push(currentLine);
+    paintr.canvas.add(currentLine);
+    isDrawing = true;
+  });
 
-  if (paintr.mode == "polygon") {
-    paintr.toggleMode();
-    document.getElementById("polygon").click();
+  var endThisPolygon = function(e) {
+    isDrawing = false;
+    currentLine = new fabric.Line([mousePos.x, mousePos.y, mousePos.x, mousePos.y], {
+      strokeWidth: 2,
+      fill: paintr.penColor,
+      stroke: paintr.penColor
+    });
+    paintr.canvas.add(currentLine);
+    paintr.canvas.add(new fabric.Group(polygon, { selectable: false }));
+    currentLine = null;
+    polygon = null;
+    justFinishedPolygon = true;
+    return false;
   }
-};
 
+  document.body.oncontextmenu = endThisPolygon;
+};
 
 /**
  * Handler for freehand drawing
  */
-paintr.drawFreehand = function() {
+paintr.drawFreehand = function () {
   paintr.toggleMode();
   paintr.canvas.isDrawingMode = true;
   paintr.canvas.renderAll();
@@ -360,10 +367,10 @@ paintr.drawFreehand = function() {
 /**
  * Handler for selection and moving
  */
-paintr.select = function() {
+paintr.select = function () {
   paintr.toggleMode();
   paintr.canvas.selection = true;
-  paintr.canvas.forEachObject(function(obj) {
+  paintr.canvas.forEachObject(function (obj) {
     obj.selectable = true;
     obj.setCoords();
   });
@@ -374,13 +381,14 @@ paintr.select = function() {
 /**
  * Resets canvas handlers. Should be called whenever the mode is changed
  */
-paintr.toggleMode = function() {
+paintr.toggleMode = function () {
   paintr.canvas.off('mouse:down');
   paintr.canvas.off('mouse:up');
   paintr.canvas.off('mouse:move');
+
   paintr.canvas.isDrawingMode = false;
   paintr.canvas.selection = false;
-  paintr.canvas.forEachObject(function(obj) {
+  paintr.canvas.forEachObject(function (obj) {
     obj.selectable = false;
   });
 };
@@ -389,40 +397,40 @@ paintr.toggleMode = function() {
  * Changes the pen color
  * @param color - color to be changed to
  */
-paintr.setColor = function(color) {
-  paintr.pen_color = color;
-  paintr.canvas.freeDrawingBrush.color = paintr.pen_color;
+paintr.setColor = function (color) {
+  paintr.penColor = color;
+  paintr.canvas.freeDrawingBrush.color = paintr.penColor;
 };
 
 /**
  * Cuts the currently selected objects
  */
-paintr.cut = function() {
+paintr.cut = function () {
   if (paintr.canvas.getActiveGroup()) {
     paintr.clipboard = [];
-    for (var i in paintr.canvas.getActiveGroup().objects){
+    for (var i in paintr.canvas.getActiveGroup().objects) {
       paintr.clipboard[i] = paintr.canvas.getActiveGroup().objects[i];
     }
-    paintr.canvas.getActiveGroup().forEachObject(function(o){
+    paintr.canvas.getActiveGroup().forEachObject(function (o) {
       paintr.canvas.remove(o)
     });
-    paintr.canvas.discardActiveGroup().renderAll();                    
-  } else if (paintr.canvas.getActiveObject()){
+    paintr.canvas.discardActiveGroup().renderAll();
+  } else if (paintr.canvas.getActiveObject()) {
     paintr.clipboard = [paintr.canvas.getActiveObject()];
     paintr.canvas.remove(paintr.canvas.getActiveObject());
-    paintr.canvas.discardActiveObject().renderAll();                    
+    paintr.canvas.discardActiveObject().renderAll();
   }
 };
 
 /**
  * Copies the currently selected objects to the clipboard
  */
-paintr.copy = function() {
+paintr.copy = function () {
   if (paintr.canvas.getActiveGroup()) {
-    for (var i in paintr.canvas.getActiveGroup().objects){
+    for (var i in paintr.canvas.getActiveGroup().objects) {
       paintr.clipboard[i] = paintr.canvas.getActiveGroup().objects[i];
     }
-  } else if (paintr.canvas.getActiveObject()){
+  } else if (paintr.canvas.getActiveObject()) {
     paintr.clipboard = [paintr.canvas.getActiveObject()];
   }
 };
@@ -430,17 +438,17 @@ paintr.copy = function() {
 /**
  * Pastes the objects that are currently on the clipboard
  */
-paintr.paste = function() {
-  if (paintr.clipboard.length > 1){
-    for (var i = 0; i < paintr.clipboard.length; i++){
+paintr.paste = function () {
+  if (paintr.clipboard.length > 1) {
+    for (var i = 0; i < paintr.clipboard.length; i++) {
       var object = fabric.util.object.clone(paintr.clipboard[i]);
       paintr.canvas.add(object);
       object.setCoords();
       if (paintr.mode !== 'select') {
         object.selectable = false;
       }
-    }                    
-  } else if (paintr.clipboard.length > 0){
+    }
+  } else if (paintr.clipboard.length > 0) {
     var object = fabric.util.object.clone(paintr.clipboard[0]);
     paintr.canvas.add(object);
     object.setCoords();
@@ -448,7 +456,7 @@ paintr.paste = function() {
       object.selectable = false;
     }
   }
-  paintr.canvas.renderAll();    
+  paintr.canvas.renderAll();
 };
 
 /**
@@ -465,14 +473,14 @@ paintr.undoRedoHandler = function (e) {
  * Handler for cutting and pasting
  * @param event
  */
-paintr.onKeyDownHandler=function(event) {
+paintr.onKeyDownHandler = function (event) {
   var key;
-  if(window.event){
+  if (window.event) {
     key = window.event.keyCode;
-  } else{
+  } else {
     key = event.keyCode;
   }
-  switch(key) {
+  switch (key) {
     case 67: // Copy (Ctrl+C)
       if (event.ctrlKey) {
         event.preventDefault();
@@ -517,7 +525,7 @@ paintr.onKeyDownHandler=function(event) {
 /**
  * Clears the canvas of all objects
  */
-paintr.clear = function() {
+paintr.clear = function () {
   paintr.canvas.clear();
 };
 
@@ -525,7 +533,7 @@ paintr.clear = function() {
  * Sets the mode for drawing and highlights the mode
  * @param mode to be set
  */
-paintr.setMode = function(mode) {
+paintr.setMode = function (mode) {
   var elem = document.getElementById(paintr.mode);
   elem.className = paintr.removeClass(elem, 'active');
   document.getElementById(mode).className += 'active';
@@ -538,16 +546,16 @@ paintr.setMode = function(mode) {
  * @param to_remove The class to be removed
  * @returns {string} The resultant class name
  */
-paintr.removeClass = function(elem, to_remove) {
+paintr.removeClass = function (elem, to_remove) {
   return elem.className.replace(to_remove, '');
 };
 
 /**
  * Save the current canvas
  */
-paintr.saveCanvas = function() {
+paintr.saveCanvas = function () {
   var canvasName = prompt("Please enter your canvas name", "");
-  for (var i = 0; i<paintr.savedCanvases.length; i++) {
+  for (var i = 0; i < paintr.savedCanvases.length; i++) {
     if (paintr.savedCanvases[i].name == canvasName) {
       canvasName = prompt("Name taken. Please enter an unused canvas name", "");
       i = -1;
@@ -568,15 +576,15 @@ paintr.saveCanvas = function() {
 /**
  * Load the drop down menu with all saved canvases
  */
-paintr.loadCanvasList = function(){
+paintr.loadCanvasList = function () {
   var ul = document.getElementById("saved-list");
-  while(ul.firstChild ) {
-    ul.removeChild( ul.firstChild );
+  while (ul.firstChild) {
+    ul.removeChild(ul.firstChild);
   }
   for (var i = 0; i < paintr.savedCanvases.length; i++) {
     var li = document.createElement("li");
     var a = document.createElement("a");
-    a.setAttribute("id", "canvas"+i);
+    a.setAttribute("id", "canvas" + i);
     a.setAttribute("onclick", "paintr.loadCanvas(this.id)");
     a.appendChild(document.createTextNode(paintr.savedCanvases[i].name));
     li.appendChild(a);
@@ -588,17 +596,17 @@ paintr.loadCanvasList = function(){
  * Load the canvas that is selected from the drop down menu
  * @param canvasId The canvas ID of the serialized canvas to be loaded
  */
-paintr.loadCanvas = function(canvasId){
-  paintr.canvas.loadFromJSON(paintr.savedCanvases[parseInt(canvasId.charAt(canvasId.length-1))].canvas);
+paintr.loadCanvas = function (canvasId) {
+  paintr.canvas.loadFromJSON(paintr.savedCanvases[parseInt(canvasId.charAt(canvasId.length - 1))].canvas);
 }
 
 // Setup the canvas
-window.onload = function() {
+window.onload = function () {
   paintr.canvas = new fabric.Canvas('canvas');
   paintr.undo_redo_manager.insert(paintr.canvas); // Store the blank canvas for undo redo
   paintr.canvas.on("object:modified", paintr.undoRedoHandler);
   paintr.canvas.backgroundColor = 'white';
-  paintr.pen_color = 'black';
+  paintr.penColor = 'black';
   paintr.mode = 'select';
   paintr.canvas.freeDrawingBrush.width = 2;
   paintr.canvas.renderAll();
@@ -613,8 +621,7 @@ window.onload = function() {
   document.getElementById('circle').addEventListener('click', paintr.drawCircle);
   document.getElementById('ellipse').addEventListener('click', paintr.drawEllipse);
   document.getElementById('polygon').addEventListener('click', paintr.drawPolygon);
-  document.oncontextmenu = paintr.endPolygon;
   document.getElementById('save').addEventListener('click', paintr.saveCanvas);
-
+  //$('.upper-canvas').bind('contextmenu', function () { return false; }); // couldn't get this to work with pure js
   document.onkeydown = paintr.onKeyDownHandler;
 };
