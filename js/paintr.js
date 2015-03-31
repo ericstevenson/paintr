@@ -338,6 +338,7 @@ paintr.drawPolygon = function () {
     }
     polygon.push(currentLine);
     paintr.canvas.add(currentLine);
+    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
     isDrawing = true;
   });
 
@@ -353,7 +354,6 @@ paintr.drawPolygon = function () {
     currentLine = null;
     polygon = null;
     justFinishedPolygon = true;
-    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
     return false;
   }
 
