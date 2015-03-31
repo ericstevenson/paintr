@@ -183,6 +183,7 @@ paintr.drawRect = function () {
 
   paintr.canvas.on('mouse:up', function (e) {
     isDrawing = false;
+    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
   });
 };
 
@@ -223,6 +224,7 @@ paintr.drawCircle = function () {
 
   paintr.canvas.on('mouse:up', function (e) {
     isDrawing = false;
+    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
   });
 };
 
@@ -263,6 +265,7 @@ paintr.drawEllipse = function () {
 
   paintr.canvas.on('mouse:up', function (e) {
     isDrawing = false;
+    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
   });
 }
 
@@ -295,6 +298,7 @@ paintr.drawLine = function () {
 
   paintr.canvas.on('mouse:up', function (e) {
     isDrawing = false;
+    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
   });
 };
 
@@ -334,6 +338,7 @@ paintr.drawPolygon = function () {
     }
     polygon.push(currentLine);
     paintr.canvas.add(currentLine);
+    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
     isDrawing = true;
   });
 
@@ -362,6 +367,10 @@ paintr.drawFreehand = function () {
   paintr.toggleMode();
   paintr.canvas.isDrawingMode = true;
   paintr.canvas.renderAll();
+
+  paintr.canvas.on('mouse:up', function (e) {
+     paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
+  });
 };
 
 /**
@@ -531,6 +540,7 @@ paintr.onKeyDownHandler = function (event) {
  */
 paintr.clear = function () {
   paintr.canvas.clear();
+
 };
 
 /**
