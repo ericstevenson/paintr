@@ -183,7 +183,7 @@ paintr.drawRect = function () {
 
   paintr.canvas.on('mouse:up', function (e) {
     isDrawing = false;
-    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
+    paintr.undo_redo_manager.insert(paintr.canvas);
   });
 };
 
@@ -224,7 +224,7 @@ paintr.drawCircle = function () {
 
   paintr.canvas.on('mouse:up', function (e) {
     isDrawing = false;
-    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
+    paintr.undo_redo_manager.insert(paintr.canvas);
   });
 };
 
@@ -265,7 +265,7 @@ paintr.drawEllipse = function () {
 
   paintr.canvas.on('mouse:up', function (e) {
     isDrawing = false;
-    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
+    paintr.undo_redo_manager.insert(paintr.canvas);
   });
 }
 
@@ -298,7 +298,7 @@ paintr.drawLine = function () {
 
   paintr.canvas.on('mouse:up', function (e) {
     isDrawing = false;
-    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
+    paintr.undo_redo_manager.insert(paintr.canvas);
   });
 };
 
@@ -338,7 +338,7 @@ paintr.drawPolygon = function () {
     }
     polygon.push(currentLine);
     paintr.canvas.add(currentLine);
-    paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
+    paintr.undo_redo_manager.insert(paintr.canvas);
     isDrawing = true;
   });
 
@@ -369,7 +369,7 @@ paintr.drawFreehand = function () {
   paintr.canvas.renderAll();
 
   paintr.canvas.on('mouse:up', function (e) {
-     paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
+     paintr.undo_redo_manager.insert(paintr.canvas);
   });
 };
 
@@ -477,6 +477,30 @@ paintr.undoRedoHandler = function (e) {
 };
 
 /**
+ * Manually handle undo press
+ */
+paintr.undoHandler = function() {
+  if (paintr.undo_redo_manager.canUndo()) {
+    var memento = paintr.undo_redo_manager.undo();
+    paintr.canvas.off('object:added');
+    paintr.canvas.loadFromJSON(memento.state);
+    paintr.canvas.on('object:added', paintr.undoRedoHandler);
+  }
+}
+
+/**
+ * Handle redo
+ */
+paintr.redoHandler = function() {
+  if (paintr.undo_redo_manager.canRedo()) {
+    var memento = paintr.undo_redo_manager.redo();
+    paintr.canvas.off('object:added');
+    paintr.canvas.loadFromJSON(memento.state);
+    paintr.canvas.on('object:added', paintr.undoRedoHandler);
+  }
+}
+
+/**
  * Handler for cutting and pasting
  * @param event
  */
@@ -509,25 +533,13 @@ paintr.onKeyDownHandler = function (event) {
     case 89: // Redo (Ctrl+Y)
       if (event.ctrlKey) {
         event.preventDefault();
-        if (paintr.undo_redo_manager.canRedo()) {
-          var memento = paintr.undo_redo_manager.redo();
-          paintr.canvas.off('object:added');
-          paintr.canvas.loadFromJSON(memento.state);
-          paintr.canvas.on('object:added', paintr.undoRedoHandler);
-        }
+        paintr.redoHandler();
       }
       break;
     case 90: // Undo (Ctrl+Z)
       if (event.ctrlKey) {
         event.preventDefault();
-        if (paintr.undo_redo_manager.canUndo()) {
-          var memento = paintr.undo_redo_manager.undo();
-          paintr.canvas.off('object:added');
-          console.log(($.extend({}, memento.state)));
-          console.log(JSON.parse(memento.state));
-          paintr.canvas.loadFromJSON(memento.state);
-          paintr.canvas.on('object:added', paintr.undoRedoHandler);
-        }
+        paintr.undoHandler();
       }
       break;
     default:
@@ -650,5 +662,7 @@ window.onload = function () {
   document.getElementById('ellipse').addEventListener('click', paintr.drawEllipse);
   document.getElementById('polygon').addEventListener('click', paintr.drawPolygon);
   document.getElementById('save').addEventListener('click', paintr.saveCanvas);
+  document.getElementById('undo').addEventListener('click', paintr.undoHandler);
+  document.getElementById('redo').addEventListener('click', paintr.redoHandler);
   document.onkeydown = paintr.onKeyDownHandler;
 };
