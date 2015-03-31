@@ -3,7 +3,11 @@
   "main": "server.js",
   "dependencies": {
     "express" : "~4.5.1",
-    "serve-favicon": "*"
+    "serve-favicon": "*",
+    "bower": "*"
+  },
+  "scripts": {
+    "postinstall": "./node_modules/bower/bin/bower install"
   }
 }
 
