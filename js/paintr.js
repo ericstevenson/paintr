@@ -352,7 +352,7 @@ paintr.drawPolygon = function () {
     return false;
   }
 
-  document.body.oncontextmenu = endThisPolygon;
+  document.getElementsByClassName('upper-canvas')[0].oncontextmenu = endThisPolygon;
 };
 
 /**
@@ -464,10 +464,8 @@ paintr.paste = function () {
  * @param e - event
  */
 paintr.undoRedoHandler = function (e) {
-  var object = e.target;
   paintr.undo_redo_manager.insert(paintr.canvas);
 };
-
 
 /**
  * Handler for cutting and pasting
@@ -504,7 +502,9 @@ paintr.onKeyDownHandler = function (event) {
         event.preventDefault();
         if (paintr.undo_redo_manager.canRedo()) {
           var memento = paintr.undo_redo_manager.redo();
+          paintr.canvas.off('object:added');
           paintr.canvas.loadFromJSON(memento.state);
+          paintr.canvas.on('object:added', paintr.undoRedoHandler);
         }
       }
       break;
@@ -513,7 +513,11 @@ paintr.onKeyDownHandler = function (event) {
         event.preventDefault();
         if (paintr.undo_redo_manager.canUndo()) {
           var memento = paintr.undo_redo_manager.undo();
+          paintr.canvas.off('object:added');
+          console.log(($.extend({}, memento.state)));
+          console.log(JSON.parse(memento.state));
           paintr.canvas.loadFromJSON(memento.state);
+          paintr.canvas.on('object:added', paintr.undoRedoHandler);
         }
       }
       break;
@@ -602,14 +606,28 @@ paintr.loadCanvas = function (canvasId) {
 
 // Setup the canvas
 window.onload = function () {
+
+  //Array.observe(paintr.undo_redo_manager.caretaker.undo_stack, function(args) {
+  //  console.log($.extend({}, args));
+  //});
+
   paintr.canvas = new fabric.Canvas('canvas');
   paintr.undo_redo_manager.insert(paintr.canvas); // Store the blank canvas for undo redo
   paintr.canvas.on("object:modified", paintr.undoRedoHandler);
+  paintr.canvas.on("object:added", paintr.undoRedoHandler);
+  paintr.canvas.on("object:deleted", paintr.undoRedoHandler);
   paintr.canvas.backgroundColor = 'white';
   paintr.penColor = 'black';
   paintr.mode = 'select';
   paintr.canvas.freeDrawingBrush.width = 2;
   paintr.canvas.renderAll();
+
+  // polygon tip
+  $('[data-toggle="popover"]').popover({
+    trigger: 'hover',
+    placement: 'right',
+    container: 'body'
+  });
 
   // EVENT LISTENERS
   document.getElementById('line').addEventListener('click', paintr.drawLine);
@@ -622,6 +640,5 @@ window.onload = function () {
   document.getElementById('ellipse').addEventListener('click', paintr.drawEllipse);
   document.getElementById('polygon').addEventListener('click', paintr.drawPolygon);
   document.getElementById('save').addEventListener('click', paintr.saveCanvas);
-  //$('.upper-canvas').bind('contextmenu', function () { return false; }); // couldn't get this to work with pure js
   document.onkeydown = paintr.onKeyDownHandler;
 };

@@ -51,3 +51,7 @@ button img{
 .dropdown-menu li{
     cursor: pointer;
 }
+
+.popover {
+    max-width: 100%;
+}
