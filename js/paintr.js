@@ -344,13 +344,8 @@ paintr.drawPolygon = function () {
 
   var endThisPolygon = function(e) {
     isDrawing = false;
-    currentLine = new fabric.Line([mousePos.x, mousePos.y, mousePos.x, mousePos.y], {
-      strokeWidth: 2,
-      fill: paintr.penColor,
-      stroke: paintr.penColor
-    });
-    paintr.canvas.add(currentLine);
-    paintr.canvas.add(new fabric.Group(polygon, { selectable: false }));
+    paintr.canvas.add(new fabric.Group(polygon.slice(0, polygon.length - 1), { selectable: false })); // don't add last line
+    paintr.canvas.remove(currentLine); // remove last line 
     currentLine = null;
     polygon = null;
     justFinishedPolygon = true;
@@ -537,6 +532,7 @@ paintr.onKeyDownHandler = function (event) {
       }
       break;
     case 90: // Undo (Ctrl+Z)
+      console.log('s');
       if (event.ctrlKey) {
         event.preventDefault();
         paintr.undoHandler();
