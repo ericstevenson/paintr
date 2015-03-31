@@ -7,7 +7,7 @@
     "bower": "*"
   },
   "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "postinstall": "bower cache clean && cd public && bower install"
   }
 }
 
