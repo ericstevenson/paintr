@@ -628,16 +628,11 @@ paintr.loadCanvas = function (canvasId) {
 
 // Setup the canvas
 window.onload = function () {
-
-  //Array.observe(paintr.undo_redo_manager.caretaker.undo_stack, function(args) {
-  //  console.log($.extend({}, args));
-  //});
-
   paintr.canvas = new fabric.Canvas('canvas');
   paintr.undo_redo_manager.insert(paintr.canvas); // Store the blank canvas for undo redo
   paintr.canvas.on("object:modified", paintr.undoRedoHandler);
-  paintr.canvas.on("object:added", paintr.undoRedoHandler);
-  paintr.canvas.on("object:deleted", paintr.undoRedoHandler);
+  //paintr.canvas.on("object:added", paintr.undoRedoHandler);
+  //paintr.canvas.on("object:deleted", paintr.undoRedoHandler);
   paintr.canvas.backgroundColor = 'white';
   paintr.penColor = 'black';
   paintr.mode = 'select';
