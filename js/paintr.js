@@ -367,7 +367,10 @@ paintr.drawFreehand = function () {
   paintr.toggleMode();
   paintr.canvas.isDrawingMode = true;
   paintr.canvas.renderAll();
-  paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
+
+  paintr.canvas.on('mouse:up', function (e) {
+     paintr.undo_redo_manager.caretaker.insertMemento(paintr.canvas);
+  });
 };
 
 /**
