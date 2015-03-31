@@ -345,7 +345,7 @@ paintr.drawPolygon = function () {
   var endThisPolygon = function(e) {
     isDrawing = false;
     paintr.canvas.add(new fabric.Group(polygon.slice(0, polygon.length - 1), { selectable: false })); // don't add last line
-    paintr.canvas.remove(currentLine); // remove last line 
+    paintr.canvas.remove(currentLine); // remove last line
     currentLine = null;
     polygon = null;
     justFinishedPolygon = true;

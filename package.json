@@ -1,0 +1,9 @@
+{
+  "name": "paintr",
+  "main": "server.js",
+  "dependencies": {
+    "express" : "~4.5.1",
+    "serve-favicon": "*"
+  }
+}
+
