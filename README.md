@@ -7,6 +7,7 @@ A simple client-side sketch drawing web application.
 
    * Bootstrap
    * Fabric.js
+   * Node.js
    * Express.js
 
 ### Features:
@@ -22,3 +23,6 @@ A simple client-side sketch drawing web application.
    * Eric Stevenson <eric-s->
    * Justin Hoang <jphoang>
    * Shaohao Lin <shaohaolin>
+
+### Demo:
+[http://ancient-mesa-7858.herokuapp.com]
